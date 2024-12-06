@@ -11,4 +11,30 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  firstname String
+  lastname String
+  email String @unique
+  password String
+  imgProfile String?
+  isVerified Boolean @default(false)
+  role Role @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  referralCode String @unique
+  referredBy Int?
+  points Int
+
+  referredByUser User? @relation("Referral", fields: [referredBy], references: [id])
+  referrals User[] @relation("Referral")
+}
+
+enum Role{
+  CUSTOMER
+  ORGANIZER
 }
