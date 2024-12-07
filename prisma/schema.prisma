@@ -29,6 +29,9 @@ model User {
   referralCode String @unique
   referredBy Int?
   points Int
+  pointsExpireAt DateTime
+  discountExpireAt DateTime
+  referralDiscount Float @default(0)
 
   referredByUser User? @relation("Referral", fields: [referredBy], references: [id])
   referrals User[] @relation("Referral")
